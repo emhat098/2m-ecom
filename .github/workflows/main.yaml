@@ -28,8 +28,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-      - run: npx run db:push
-      - run: npx run db:seed
+      - run: npm run db:push
+      - run: npm run db:seed
 
       - name: Cypress run
         uses: cypress-io/github-action@v3
