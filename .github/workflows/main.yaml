@@ -29,7 +29,7 @@ jobs:
         with:
           project: .
           browser: chrome
-          build: npm run build
+          build: npx run db:push && npx run db:seed && npm run build
           start: npm run start
           wait-on: "http://localhost:3000"
         env:
