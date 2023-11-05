@@ -22,8 +22,8 @@ jobs:
         with:
           project: .
           browser: chrome
-          build: npm build
-          start: npm start
+          build: npm run build
+          start: npm run start
           wait-on: "http://localhost:3000"
         env:
           DATABASE_URL: "postgres://postgres@localhost:5432/test"
