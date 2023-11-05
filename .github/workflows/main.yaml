@@ -30,6 +30,8 @@ jobs:
           node-version: 18
       - run: npm run db:push
       - run: npm run db:seed
+        env:
+          DATABASE_URL: "postgres://postgres:123456@localhost:5432/e2e-test"
 
       - name: Cypress run
         uses: cypress-io/github-action@v3
