@@ -21,18 +21,22 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
-      # - name: Install dependencies
-      #   run: apt-get update && apt-get install -y libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libnss3 libxss1 libasound2 libxtst6 xauth xvfb
-
       - name: Checkout
         uses: actions/checkout@v2
+
+      - name: Init database
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: npx run db:push
+      - run: npx run db:seed
 
       - name: Cypress run
         uses: cypress-io/github-action@v3
         with:
           project: .
           browser: chrome
-          build: npm run db:push && npm run db:seed && npm run build
+          build: npm run build
           start: npm run start
           wait-on: "http://localhost:3000"
         env:
