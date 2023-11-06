@@ -8,13 +8,12 @@ on:
     branches:
       - main
   workflow_run:
-    workflows: [e2e-tests]
-    types:
-      - completed
+    workflows: [e2e-test]
+    types: [completed]
 
 jobs:
-  e2e-tests:
-    uses: emhat098/2m-ecom/.github/workflows/test.yaml@main
+  # e2e-tests:
+  #   uses: emhat098/2m-ecom/.github/workflows/test.yaml@main
 
   on-success:
     name: Deploy production
