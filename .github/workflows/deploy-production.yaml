@@ -7,15 +7,14 @@ on:
   push:
     branches:
       - main
-  workflow_run:
-    workflows: [e2e-test]
-    types: [completed]
-
 jobs:
-  on-success:
+  e2e-test:
+    uses: ./.github/workflows/e2e-test.yaml
+
+  deploy:
     name: Deploy production
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    needs: ["e2e-test"]
     steps:
       - run: echo 'E2E testing was passed'
       - name: Wait for tests to succeed
