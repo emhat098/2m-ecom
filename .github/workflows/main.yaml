@@ -19,19 +19,19 @@ jobs:
           - 5432:5432
         # needed because the postgres container does not provide a healthcheck
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/grading-app
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Init database
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v3
         with:
           node-version: 18
       - run: npm run db:push
       - run: npm run db:seed
-        env:
-          DATABASE_URL: "postgres://postgres:123456@localhost:5432/e2e-test"
+
+      - name: Checkout
+        uses: actions/checkout@v2
 
       - name: Cypress run
         uses: cypress-io/github-action@v3
