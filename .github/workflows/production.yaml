@@ -2,15 +2,26 @@ name: Vercel Production Deployment
 env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
 on:
   push:
     branches:
       - main
+  workflow_run:
+    workflows: [e2e-tests]
+    types:
+      - completed
+
 jobs:
-  Deploy-Production:
+  e2e-tests:
+    uses: emhat098/2m-ecom/.github/workflows/test.yaml@main
+
+  on-success:
     name: Deploy production
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
+      - run: echo 'E2E testing was passed'
       - name: Wait for tests to succeed
         uses: lewagon/wait-on-check-action@v1.3.1
         with:
@@ -27,3 +38,9 @@ jobs:
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
       - name: Deploy Project Artifacts to Vercel
         run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+  on-failure:
+    name: Deploy production failed
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    steps:
+      - run: echo 'The triggering workflow failed'
