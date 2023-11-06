@@ -3,6 +3,7 @@ import { ProductItemSkeleton } from "@/components/product/ProductItem";
 import { ProductType } from "@/models/Product";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 const ProductItem = dynamic(() => import("@/components/product/ProductItem"), {
   ssr: false,
@@ -11,7 +12,9 @@ const ProductItem = dynamic(() => import("@/components/product/ProductItem"), {
 
 export default async function Home() {
   const products = await getProducts();
-  const data = JSON.parse(JSON.stringify(products));
+  const data = JSON.parse(JSON.stringify(products || ""));
+  if (!data) return notFound();
+
   return (
     <div className="product-list">
       {data.map((product: ProductType) => (
