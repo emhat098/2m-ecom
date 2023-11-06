@@ -48,5 +48,5 @@ jobs:
           build: npm run build
           start: npm run start
           wait-on: "http://localhost:3000"
-        env:
-          DATABASE_URL: "postgres://postgres:123456@localhost:5432/e2e-test"
+        # env:
+        #   DATABASE_URL: postgres://postgres:123456@localhost:5432/e2e-test
