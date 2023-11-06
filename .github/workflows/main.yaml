@@ -6,33 +6,39 @@ on:
       - main
 
 jobs:
-  testing-with-chrome:
+  test:
     runs-on: ubuntu-latest
+    # Service containers to run with `container-job`
     services:
       postgres:
-        image: postgres:latest
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
         env:
           POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: 123456
-          POSTGRES_DB: e2e-test
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
         ports:
+          # Maps tcp port 5432 on service container to the host
           - 5432:5432
-        # needed because the postgres container does not provide a healthcheck
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     env:
-      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/grading-app
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/e2e-test
 
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v3
         with:
           node-version: 18
+      - run: npm install
+      # run the migration in the test database
       - run: npm run db:push
-      - run: npm run db:seed
+      - run: npm run build
 
-      - name: Checkout
-        uses: actions/checkout@v2
-
+      # run Cypress testing.
       - name: Cypress run
         uses: cypress-io/github-action@v3
         with:
