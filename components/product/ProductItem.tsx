@@ -82,4 +82,85 @@ const ProductItem: React.FC<{ product: ProductType }> = ({ product }) => {
   );
 };
 
+export const ProductItemSkeleton = () => {
+  return (
+    <Center py={12} className="animate-pulse bg-slate-100">
+      <Box
+        role={"group"}
+        p={6}
+        maxW={"330px"}
+        w={"full"}
+        bg={useColorModeValue("white", "gray.800")}
+        boxShadow={"2xl"}
+        rounded={"lg"}
+        pos={"relative"}
+        zIndex={1}
+      >
+        <Box
+          rounded={"lg"}
+          mt={-12}
+          pos={"relative"}
+          height={"230px"}
+          _after={{
+            transition: "all .3s ease",
+            content: '""',
+            w: "full",
+            h: "full",
+            pos: "absolute",
+            top: 5,
+            left: 0,
+            filter: "blur(15px)",
+            zIndex: -1,
+          }}
+          _groupHover={{
+            _after: {
+              filter: "blur(20px)",
+            },
+          }}
+        >
+          <Box
+            className="animate-pulse bg-slate-200 rounded-lg"
+            h={230}
+            w={282}
+          ></Box>
+        </Box>
+        <Stack pt={10} align={"center"}>
+          <Box
+            className="animate-pulse bg-slate-100 rounded-lg"
+            h={"4"}
+            w={"full"}
+            color={"gray.500"}
+            fontSize={"sm"}
+            textTransform={"uppercase"}
+          ></Box>
+          <Box
+            className="animate-pulse bg-slate-100 rounded-lg"
+            h={"10"}
+            w={"full"}
+            fontSize={"2xl"}
+            fontFamily={"body"}
+            fontWeight={500}
+          ></Box>
+          <Stack direction={"row"} align={"center"}>
+            <Box
+              className="animate-pulse bg-slate-100 rounded-lg w-full"
+              h={"4"}
+              w={"full"}
+              fontWeight={800}
+              fontSize={"xl"}
+            ></Box>
+            <Box
+              textDecoration={"line-through"}
+              color={"gray.600"}
+              h={"4"}
+              w={"full"}
+              className="animate-pulse bg-slate-100 rounded-lg w-full"
+            ></Box>
+          </Stack>
+        </Stack>
+      </Box>
+    </Center>
+  );
+};
+
 export default ProductItem;

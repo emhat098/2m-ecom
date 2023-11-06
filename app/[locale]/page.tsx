@@ -1,14 +1,23 @@
-import getProduct from "@/actions/read/get-product";
-import ProductItem from "@/components/product/ProductItem";
+import getProducts from "@/actions/read/get-products";
+import { ProductItemSkeleton } from "@/components/product/ProductItem";
 import { ProductType } from "@/models/Product";
+import dynamic from "next/dynamic";
+import Link from "next/link";
+
+const ProductItem = dynamic(() => import("@/components/product/ProductItem"), {
+  ssr: false,
+  loading: () => <ProductItemSkeleton />,
+});
 
 export default async function Home() {
-  const products = await getProduct();
+  const products = await getProducts();
   const data = JSON.parse(JSON.stringify(products));
   return (
     <div className="product-list">
       {data.map((product: ProductType) => (
-        <ProductItem key={product.id} product={product} />
+        <Link key={product.id} href={"/" + product.id}>
+          <ProductItem product={product} />
+        </Link>
       ))}
     </div>
   );
