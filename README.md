@@ -3,7 +3,7 @@
 
 This is a project CICD with:
 - [x] Next.js 13 (Framework)
-- [x] Prisma (PostgresSQL)
+- [x] Prisma (Postgres)
 - [x] Vercel (Hosting)
 - [x] Cypress (Testing)
 
